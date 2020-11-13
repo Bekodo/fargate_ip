@@ -7,14 +7,16 @@ from datetime import datetime
 class ServiceIP(object):
     ip = ''       
     cluster = ''
-    service = '' 
+    service = ''
+    profile = ''
+    region = ''
     dir_path = os.path.dirname(os.path.abspath(__file__))
     tplfile = os.path.join(dir_path,"fargate.tpl")
     vclfile = os.path.join(dir_path,"fargate.vcl")
 
     def __init__(self):
-        session = boto3.Session(profile_name = 'vilaweb')
-        self.ecs = session.client('ecs',region_name = 'eu-west-1')
+        session = boto3.Session(profile_name = self.profile)
+        self.ecs = session.client('ecs',region_name = self.region)
 
     def _getIp(self):
         taskArns = self.ecs.list_tasks(
